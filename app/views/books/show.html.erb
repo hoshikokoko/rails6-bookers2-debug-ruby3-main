@@ -17,16 +17,31 @@
           </td>
           <td><%= link_to @booker.title, @booker %></td>
           <td><%= @booker.body %></td>
-            <td>
-              <% if @user == current_user %>
-              <%= link_to 'Edit', edit_book_path(@booker), class: "btn btn-sm btn-success" %>
-              <% end %>
-            </td>
-            <td>
-              <% if @user == current_user %>
-              <%= link_to 'Destroy', book_path(@booker.id), method: :delete, data: { confirm: '本当に消しますか？' }, class: "btn btn-sm btn-danger"%>
-              <% end %>
-            </td>
+          <td>
+            <% if @user == current_user %>
+            <%= link_to 'Edit', edit_book_path(@booker), class: "btn btn-sm btn-success" %>
+            <% end %>
+          </td>
+          <td>
+            <% if @user == current_user %>
+            <%= link_to 'Destroy', book_path(@booker.id), method: :delete, data: { confirm: '本当に消しますか？' }, class: "btn btn-sm btn-danger"%>
+            <% end %>
+          </td>
+          <td>
+            <% if @booker.favorited_by?(current_user) %>
+              <p>
+                <%= link_to book_favorites_path(@booker), method: :delete do %>
+                  ♥<%= @booker.favorites.count %>
+                <% end %>
+              </p>
+            <% else %>
+              <p>
+                <%= link_to book_favorites_path(@booker), method: :post do %>
+                  ♡<%= @booker.favorites.count %>
+                <% end %>
+              </p>
+            <% end %>
+          </td>
         </tr>
       </table>
     </div>
