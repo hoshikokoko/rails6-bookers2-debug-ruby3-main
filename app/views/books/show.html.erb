@@ -10,43 +10,31 @@
   		<h2>Book detail</h2>
   		<table class='table'>
   		  <tr>
-          <td><%= link_to (@booker.user) do %>
-            <%= image_tag @booker.user.get_profile_image, size:'100x100' %><br>
-            <%= @booker.user.name %>
+          <td><%= link_to (@books.user) do %>
+            <%= image_tag @books.user.get_profile_image, size:'100x100' %><br>
+            <%= @books.user.name %>
             <% end %>
           </td>
-          <td><%= link_to @booker.title, @booker %></td>
-          <td><%= @booker.body %></td>
+          <td><%= link_to @books.title, @books %></td>
+          <td><%= @books.body %></td>
           <td>
             <% if @user == current_user %>
-            <%= link_to 'Edit', edit_book_path(@booker), class: "btn btn-sm btn-success" %>
+            <%= link_to 'Edit', edit_book_path(@books), class: "btn btn-sm btn-success" %>
             <% end %>
           </td>
           <td>
             <% if @user == current_user %>
-            <%= link_to 'Destroy', book_path(@booker.id), method: :delete, data: { confirm: '本当に消しますか？' }, class: "btn btn-sm btn-danger"%>
+            <%= link_to 'Destroy', book_path(@books.id), method: :delete, data: { confirm: '本当に消しますか？' }, class: "btn btn-sm btn-danger"%>
             <% end %>
           </td>
+        <td class="<%= @books.id %>">
+          <%= render "favorites/favorite_btn", book: @books %>
+        </td>
           <td>
-            <% if @booker.favorited_by?(current_user) %>
-              <p>
-                <%= link_to book_favorites_path(@booker), method: :delete do %>
-                  ♥<%= @booker.favorites.count %>
-                <% end %>
-              </p>
-            <% else %>
-              <p>
-                <%= link_to book_favorites_path(@booker), method: :post do %>
-                  ♡<%= @booker.favorites.count %>
-                <% end %>
-              </p>
-            <% end %>
-          </td>
-          <td>
-            <p>コメント数:<%= @booker.book_comments.count %></p>
+            <p>コメント数:<%= @books.book_comments.count %></p>
           </td>
         </tr>
-        <% @booker.book_comments.each do |book_comment| %>
+        <% @books.book_comments.each do |book_comment| %>
         <tr>
           <td><%= link_to (book_comment.user) do %>
             <%= image_tag book_comment.user.get_profile_image, size:'100x100' %><br>
@@ -65,7 +53,7 @@
         <% end %>
       </table>
       <div>
-        <%= form_with model: [@booker, @book_comment] do |f| %>
+        <%= form_with model: [@books, @book_comment] do |f| %>
           <%= f.text_area :comment %>
           <%= f.submit "送信" %>
         <% end %>
