@@ -34,26 +34,12 @@
             <p>コメント数:<%= @books.book_comments.count %></p>
           </td>
         </tr>
-        <% @books.book_comments.each do |book_comment| %>
-        <tr>
-          <td><%= link_to (book_comment.user) do %>
-            <%= image_tag book_comment.user.get_profile_image, size:'100x100' %><br>
-            <%= book_comment.user.name %>
-            <% end %>
-          </td>
-          <td>
-            <%= book_comment.comment %>
-          </td>
-          <% if book_comment.book.commented_by?(current_user) %>
-          <td>
-            <%= link_to "Destroy", book_book_comments_path(book_comment.book), method: :delete, class: "btn btn-danger btn-sm btn-block" %>
-          </td>
-          <% end %>
-        </tr>
-        <% end %>
+      </table>
+      <table class="comments">
+        <%= render "book_comments/index", books: @books %>
       </table>
       <div>
-        <%= form_with model: [@books, @book_comment] do |f| %>
+        <%= form_with model: [@books, @book_comment], local: false do |f| %>
           <%= f.text_area :comment %>
           <%= f.submit "送信" %>
         <% end %>
